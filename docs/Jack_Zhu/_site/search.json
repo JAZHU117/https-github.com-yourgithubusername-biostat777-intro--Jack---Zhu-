@@ -1,0 +1,58 @@
+[
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "Jack Zhu",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Jack Zhu",
+    "section": "",
+    "text": "Hi! My name is Jack Zhu. I’m currently working as a Research Data Manager at the Johns Hopkins Bloomberg School of Public Health on lung health related cohort studies."
+  },
+  {
+    "objectID": "example_analysis.html",
+    "href": "example_analysis.html",
+    "title": "Example Analysis",
+    "section": "",
+    "text": "Numbats are endangered marsupials that now live in small colonies in Western Austrailia, though they used to be widespread throughout Southern Austrailia. They are a diurnal species, meaning that they are active during the day and inactive at night.\nFor this example analysis, I am analyzing data from the “Numbats in Austrailia” dataset prepared by the Atlas of Living Animals and made available on the Tidyverse Tuesday repository."
+  },
+  {
+    "objectID": "example_analysis.html#introduction",
+    "href": "example_analysis.html#introduction",
+    "title": "Example Analysis",
+    "section": "",
+    "text": "Numbats are endangered marsupials that now live in small colonies in Western Austrailia, though they used to be widespread throughout Southern Austrailia. They are a diurnal species, meaning that they are active during the day and inactive at night.\nFor this example analysis, I am analyzing data from the “Numbats in Austrailia” dataset prepared by the Atlas of Living Animals and made available on the Tidyverse Tuesday repository."
+  },
+  {
+    "objectID": "example_analysis.html#questions",
+    "href": "example_analysis.html#questions",
+    "title": "Example Analysis",
+    "section": "Questions",
+    "text": "Questions\nMy questions for this analysis are as follows:\n\nWhat time of day do numbat sightings occur?\nAre they more frequent in the summer or winter?\nAre numbats seen more on sunny and warm days than cloudy, wet, cold days?\nDo sightings happen more on week days than weekends?"
+  },
+  {
+    "objectID": "example_analysis.html#intended-audience",
+    "href": "example_analysis.html#intended-audience",
+    "title": "Example Analysis",
+    "section": "Intended Audience",
+    "text": "Intended Audience\nThe intended audience for this analysis is biologists, conservationists, and numbat enthusiasts. Biologists and conservationists may want to know about numbat behavior, activity, and sightings to inform future conservation methods, while numbat enthusiasts may want to be informed of the best places and times to observe them."
+  },
+  {
+    "objectID": "example_analysis.html#data-dictionary",
+    "href": "example_analysis.html#data-dictionary",
+    "title": "Example Analysis",
+    "section": "Data Dictionary",
+    "text": "Data Dictionary\n| Variable | Class | Description | |——————-|————-|——————-| | decimalLatitude | double | Decimal latitude"
+  },
+  {
+    "objectID": "example_analysis.html#data-wrangling",
+    "href": "example_analysis.html#data-wrangling",
+    "title": "Example Analysis",
+    "section": "Data Wrangling",
+    "text": "Data Wrangling\n\n##Reading in Numbats Data Set \nnumbats &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-03-07/numbats.csv')\n\nRows: 805 Columns: 16\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\nchr  (6): scientificName, taxonConceptID, recordID, dataResourceName, month,...\ndbl  (7): decimalLatitude, decimalLongitude, year, hour, prcp, tmax, tmin\nlgl  (1): dryandra\ndttm (1): eventDate\ndate (1): day\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.\n\n\n\n#Viewing the Data Set \ndim (numbats)\n\n[1] 805  16\n\nstr (numbats)\n\nspc_tbl_ [805 × 16] (S3: spec_tbl_df/tbl_df/tbl/data.frame)\n $ decimalLatitude : num [1:805] -37.6 -35.1 -35 -34.7 -34.6 ...\n $ decimalLongitude: num [1:805] 146 150 118 118 117 ...\n $ eventDate       : POSIXct[1:805], format: NA \"2014-06-05 02:00:00\" ...\n $ scientificName  : chr [1:805] \"Myrmecobius fasciatus\" \"Myrmecobius fasciatus\" \"Myrmecobius fasciatus\" \"Myrmecobius fasciatus\" ...\n $ taxonConceptID  : chr [1:805] \"https://biodiversity.org.au/afd/taxa/6c72d199-f0f1-44d3-8197-224a2f7cff5f\" \"https://biodiversity.org.au/afd/taxa/6c72d199-f0f1-44d3-8197-224a2f7cff5f\" \"https://biodiversity.org.au/afd/taxa/6c72d199-f0f1-44d3-8197-224a2f7cff5f\" \"https://biodiversity.org.au/afd/taxa/6c72d199-f0f1-44d3-8197-224a2f7cff5f\" ...\n $ recordID        : chr [1:805] \"73830609-3d94-461f-a833-01c0a30c5a0d\" \"13287c0e-034d-4f05-908b-d3b60c90813d\" \"1041c2af-7e1f-4344-b79c-9c04aa3a55b5\" \"c9804b7a-de92-42db-8912-632dc37baa38\" ...\n $ dataResourceName: chr [1:805] \"Queen Victoria Museum Art Gallery provider for OZCAM\" \"ALA species sightings and OzAtlas\" \"Western Australian Museum provider for OZCAM\" \"Western Australian Museum provider for OZCAM\" ...\n $ year            : num [1:805] NA 2014 NA NA NA ...\n $ month           : chr [1:805] NA \"Jun\" NA NA ...\n $ wday            : chr [1:805] NA \"Thu\" NA NA ...\n $ hour            : num [1:805] NA 2 NA NA NA NA NA NA NA NA ...\n $ day             : Date[1:805], format: NA \"2014-06-05\" ...\n $ dryandra        : logi [1:805] FALSE FALSE FALSE FALSE FALSE FALSE ...\n $ prcp            : num [1:805] NA NA NA NA NA NA NA NA NA NA ...\n $ tmax            : num [1:805] NA NA NA NA NA NA NA NA NA NA ...\n $ tmin            : num [1:805] NA NA NA NA NA NA NA NA NA NA ...\n - attr(*, \"spec\")=\n  .. cols(\n  ..   decimalLatitude = col_double(),\n  ..   decimalLongitude = col_double(),\n  ..   eventDate = col_datetime(format = \"\"),\n  ..   scientificName = col_character(),\n  ..   taxonConceptID = col_character(),\n  ..   recordID = col_character(),\n  ..   dataResourceName = col_character(),\n  ..   year = col_double(),\n  ..   month = col_character(),\n  ..   wday = col_character(),\n  ..   hour = col_double(),\n  ..   day = col_date(format = \"\"),\n  ..   dryandra = col_logical(),\n  ..   prcp = col_double(),\n  ..   tmax = col_double(),\n  ..   tmin = col_double()\n  .. )\n - attr(*, \"problems\")=&lt;externalptr&gt;"
+  }
+]

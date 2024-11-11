@@ -1,0 +1,143 @@
+---
+title: "Example Analysis"
+---
+
+## Introduction
+
+Numbats are endangered marsupials that now live in small colonies in Western Austrailia, though they used to be widespread throughout Southern Austrailia. They are a diurnal species, meaning that they are active during the day and inactive at night.
+
+For this example analysis, I am analyzing data from the "Numbats in Austrailia" dataset prepared by the Atlas of Living Animals and made available on the Tidyverse Tuesday repository.
+
+## Questions
+
+My questions for this analysis are as follows:
+
+1.  What time of day do numbat sightings occur?
+2.  Are they more frequent in the summer or winter?
+3.  Are numbats seen more on sunny and warm days than cloudy, wet, cold days?
+4.  Do sightings happen more on week days than weekends?
+
+## Intended Audience
+
+The intended audience for this analysis is biologists, conservationists, and numbat enthusiasts. Biologists and conservationists may want to know about numbat behavior, activity, and sightings to inform future conservation methods, while numbat enthusiasts may want to be informed of the best places and times to observe them.
+
+## Data Dictionary
+
+```{r}
+
+library("kableExtra")
+datadict <-data.frame(
+ Variable=c("decimalLatitude","decimalLongitude","eventDate", "scientificName","taxonConceptID","recordID", "dataResourceName","year","month","wday","hour","day", "dryandra","prcp","tmax","tmin"), 
+ Class=c("double", "double", "datetime", "factor", "factor", "character", "factor", "integer", "factor", "factor", "integer", "date", "logical", "double", "double", "double"),
+Description=c("decimalLatitude", "decimalLongitude", "eventDate", "Either 'Myrmecobius fasciatus' or 'Myrmecobius fasciatus rufus'", "The URL for this (sub)species", "recordID", "dataResourceName", "The 4-digit year of the event (when available)", "The 3-letter month abbreviation of the event (when available)", "The 3-letter weekday abbreviation of the event (when available)", "The hour of the event (when available)", "The date of the event (when available)", "Whether the observation was in Dryandra Woodland", "Precipitation on that day in Dryandra Woodland (when relevant), in millimeters", "Maximum temperature on that day in Dryandra Woodland (when relevant), in degrees Celsius", "Minimum temperature on that day in Dryandra Woodland (when relevant), in degrees Celsius"))
+
+datadict %>%
+  kbl(caption = "Data Dictionary") %>%
+  kable_material(c("striped", "hover"))
+ 
+```
+
+## Data Wrangling
+
+```{r}
+##Reading in Numbats Data Set 
+numbats.0 <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-03-07/numbats.csv')
+```
+
+```{r}
+#Exploring the Data Set 
+dim (numbats.0)
+str (numbats.0)
+
+##There are 16 variables in the data set and 805 observations.
+
+```
+
+```{r}
+library (dplyr) 
+
+##Selecting Relevant Variables 
+numbats.1 <-numbats.0 %>% select(scientificName, recordID, dataResourceName, year, month, wday, hour, day, dryandra, prcp, tmax, tmin)
+
+##Arranging Data Set From Earliest to Latest Sighting 
+numbats.2 <-numbats.1 %>% 
+  arrange (scientificName, day,dataResourceName)
+
+##Viewing Arragned Data Set 
+numbats.2 [1:12, 1:12]
+
+##Creating a New Seasons and Dtetime Variable 
+
+##I used ChatGPT to fix the syntax in my nested if_else statement
+
+##These two nested mutate and if_else statements dictate the following: 
+
+## 1. If the value for month is Dec", "Jan", or "Feb," then the value for the new variable, season is "Winter; if the value for month is "Mar", "Apr", or "May," then the value for the new variable, season, is "Spring; if the value for month is "Jun", "Jul", or "Aug," then the value for the new variable, season, is "Summer"; if the value for month is "Sep", "Oct", or "Nov," then the value for the new variable, season, is "Fall". If the value for month is missing, then the value for season is NA. 
+
+##2. If the value for wday is "Mon", "Tue", "Wed", "Thu", or "Fri," then the new variable, timewk, (which has a vaue of Weekday or Weekend) has a value of "Weekday". If the value for wday is Sat" or "Sun," then the new variable, timewk, has a value of "Weekend". If the value for wday is missing, then the new variable, timewk, has a value of NA. 
+
+numbats.3 <- numbats.2 %>%
+  mutate(season = if_else(
+    month %in% c("Dec", "Jan", "Feb"), "Winter",
+    if_else(
+      month %in% c("Mar", "Apr", "May"), "Spring",
+      if_else(
+        month %in% c("Jun", "Jul", "Aug"), "Summer",
+        if_else(
+          month %in% c("Sep", "Oct", "Nov"), "Fall",
+          NA_character_
+        )
+      )
+    )
+  )) %>%
+  mutate(timewk = if_else(
+    wday %in% c("Mon", "Tue", "Wed", "Thu", "Fri"), 
+    "Weekday", 
+    if_else(
+      wday %in% c("Sat", "Sun"), 
+      "Weekend", 
+      NA_character_
+    )
+  ))
+
+
+```
+
+## Data Visualization
+
+```{r}
+##Generating a Frequency Table for the # of Numbat Spottings at Specific Hours of Day
+
+numbat_freq <- numbats.3 %>%
+  count(hour) %>%
+  rename(Hour = hour, Frequency = n)
+
+##Printing Frequency Table 
+print(numbat_freq)
+```
+
+I generated a frequency table that displays the frequency of numbat sightings throughout different times in the day.
+
+It appears that most numbat sightings occur during the afternoon between 1 (Hour 13) and 2 (Hour 14) pm.
+
+::: callout-note
+Note that the hour of the day is recorded in military time. For example, hour 13 is 1:00 pm, hour 22 is 10 pm, and so on and so forth.
+:::
+
+```{r}
+library ("ggplot2")
+
+##Creating a Frequency Table of # of Numbat Spottings and Time of Day
+
+numbat_ct <- as.data.frame(table(numbats.3$hour))
+
+
+##Renaming Column Names of Frequency Table 
+colnames(numbat_ct) <- c("Hour", "Frequency")
+midpoint_value <- median(numbat_ct$Frequency)
+ggplot(numbat_ct, aes(x = Hour, y = Frequency, fill = Frequency)) +
+  geom_bar(stat = "identity") +
+  scale_fill_gradient2(low = "lightyellow", mid = "darkorange", high = "red") +  # Custom gradient
+  labs(title = "Numbat Spottings Throughout the Day", x = "Hour", y = "Frequency of Spottings") +
+  theme(plot.title = element_text(hjust = 0.5))
+```

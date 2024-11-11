@@ -1,0 +1,11 @@
+---
+title: "About"
+---
+
+About
+
+Bio
+
+I'm originally from Queens, NY, and I'm currently working as a Research Data Manager at the Johns Hopkins Bloomberg School of Public Health. I earned my Master of Public Health degree in Epidemiology and Biostatistics at the Boston University School of Public Health, and my Bachelor's degree in Psychology and Sociology at Stony Brook University.
+
+While I am still exploring my research interests, I have enjoyed working on global health and maternal and child health research studies. I have enjoyed navigating and troubleshooting data collection challenges and programming survey tools that take those challenges into consideration.

@@ -1,0 +1,6 @@
+- source: project
+  quarto-pub:
+    - id: 90481134-0289-4756-9aa4-439007477184
+      url: https://jazhu.quarto.pub/jack-zhu
+  execute:
+  freeze: auto

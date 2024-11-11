@@ -1,0 +1,9 @@
+---
+title: "Jack Zhu"
+about: 
+  template: jolla 
+  image-shape: rectangle
+  image: images/profile_pic.jpg
+---
+
+Hi! My name is Jack Zhu. I'm currently working as a Research Data Manager at the Johns Hopkins Bloomberg School of Public Health on lung health related cohort studies. Outside of work and academia, I am passionate about animal rights and trying new vegan recipes. I also love long-distance running, being outdoors, and reading!
